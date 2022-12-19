@@ -20,7 +20,7 @@ class Downward_block(Layer):
 
 class Upward_block(Layer):
     def __init__(self, conv3_filters, upconv_filters):
-        super("Upward_block", self).__init__(Upward_block)
+        super(Upward_block, self).__init__()
         self.conv3_1 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
         self.conv3_2 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
         self.concat = Concatenate(axis=3)
@@ -33,6 +33,7 @@ class Upward_block(Layer):
         x2 = self.conv3_2(x2)
         
         return x2
+
 
 
 class Unet(Layer):
