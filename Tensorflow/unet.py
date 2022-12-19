@@ -1,11 +1,11 @@
+from keras.layers import Layer
 import tensorflow as tf
 import keras.layers as Layers
-from keras.layers import Conv2D, Input, BatchNormalization, ReLU, MaxPooling2D, GlobalAveragePooling2D, Conv2DTranspose
+from keras.layers import Conv2D, Input, BatchNormalization, ReLU, MaxPooling2D
 from keras import Model
-# from keras.layers.merge import concatenate
-# from keras.layers import Concatenate
-# concatenate([u9, c1], axis=3)
-class Downward_block(Layers):
+from keras.layers import Concatenate, GlobalAveragePooling2D, Conv2DTranspose
+
+class Downward_block(Layer):
     def __init__(self, num_filters):
         super('Downward_block', self).__init__(Downward_block)
         self.conv3 = Conv2D(num_filters, (3, 3), padding='same', activation='relu')
@@ -18,23 +18,24 @@ class Downward_block(Layers):
         return x
 
 
-class Upward_block(Layers):
+class Upward_block(Layer):
     def __init__(self, conv3_filters, upconv_filters):
         super("Upward_block", self).__init__(Upward_block)
         self.conv3_1 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
         self.conv3_2 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
-
+        self.concat = Concatenate(axis=3)
         self.upconv = Conv2DTranspose(upconv_filters, (2, 2), activation='relu')
 
     def call(self, x):
-        x = self.upconv(x)
-        x = self.conv3_1(x)
-        x = self.conv3_2(x)
+        x1 = self.upconv(x)
+        x2 = self.concat([x, x1])
+        x = self.conv3_1(x2)
+        x2 = self.conv3_2(x2)
         
-        return x
+        return x2
 
 
-class Unet(Layers):
+class Unet(Layer):
     def __init__(self):
         super('Unet', self).__init__(Unet)
 
