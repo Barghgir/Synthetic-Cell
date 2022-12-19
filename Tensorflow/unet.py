@@ -62,6 +62,15 @@ class Unet(Layer):
         x = self.conv3(x4)
         x = self.conv3(x)
 
+        x = self.up4(x, x4)
+        x = self.up4(x, x3)
+        x = self.up4(x, x2)
+        x = self.up4(x, x1)
+
+        x = self.conv1(x)
+
+        return x
+
 
 
 
