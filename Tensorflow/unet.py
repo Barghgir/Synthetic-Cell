@@ -18,7 +18,7 @@ class Downward_block(Layer):
         return x
 
 
-class Upward_block(Layer):
+lass Upward_block(Layer):
     def __init__(self, conv3_filters, upconv_filters):
         super("Upward_block", self).__init__(Upward_block)
         self.conv3_1 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
@@ -26,10 +26,10 @@ class Upward_block(Layer):
         self.concat = Concatenate(axis=3)
         self.upconv = Conv2DTranspose(upconv_filters, (2, 2), activation='relu')
 
-    def call(self, x):
+    def call(self, x, y):
         x1 = self.upconv(x)
-        x2 = self.concat([x, x1])
-        x = self.conv3_1(x2)
+        x2 = self.concat([y, x1])
+        x2 = self.conv3_1(x2)
         x2 = self.conv3_2(x2)
         
         return x2
