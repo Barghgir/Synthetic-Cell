@@ -36,7 +36,7 @@ class Upward_block(Layer):
 
 
 
-class Unet(Layer):
+class Unet(Model):
     def __init__(self):
         super(Unet, self).__init__()
 
