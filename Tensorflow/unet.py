@@ -38,7 +38,7 @@ class Upward_block(Layer):
 
 class Unet(Layer):
     def __init__(self):
-        super('Unet', self).__init__(Unet)
+        super(Unet, self).__init__()
 
         self.down1 = Downward_block(64)
         self.down2 = Downward_block(128)
