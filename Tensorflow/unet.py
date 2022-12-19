@@ -47,10 +47,10 @@ class Unet(Layer):
 
         self.conv3 = Conv2D(1024, (3, 3), padding='same', activation='relu')
 
-        self.up4 = Upward_block(512)
-        self.up3 = Upward_block(256) 
-        self.up2 = Upward_block(128) 
-        self.up1 = Upward_block(64) 
+        self.up4 = Upward_block(512, 512)
+        self.up3 = Upward_block(256, 256) 
+        self.up2 = Upward_block(128, 128) 
+        self.up1 = Upward_block(64, 64) 
 
         self.conv1 = Conv2D(1, (1, 1), padding='same', activation='relu')
 
