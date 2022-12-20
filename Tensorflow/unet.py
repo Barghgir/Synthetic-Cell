@@ -24,7 +24,7 @@ class Upward_block(Layer):
         self.conv3_1 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
         self.conv3_2 = Conv2D(conv3_filters, (3, 3), padding='valid', activation='relu')
         self.concat = Concatenate(axis=3)
-        self.upconv = Conv2DTranspose(upconv_filters, (2, 2), activation='relu')
+        self.upconv = Conv2DTranspose(upconv_filters, (3, 3), padding='same', activation='relu')
 
     def call(self, x, y):
         x1 = self.upconv(x)
