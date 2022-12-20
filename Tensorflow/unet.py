@@ -8,15 +8,15 @@ from keras.layers import Concatenate, GlobalAveragePooling2D, Conv2DTranspose
 class Downward_block(Layer):
     def __init__(self, num_filters):
         super(Downward_block, self).__init__()
-        self.conv3 = Conv2D(num_filters, (3, 3), padding='same', activation='relu')
+        self.conv3_1 = Conv2D(num_filters, (3, 3), padding='same', activation='relu')
+        self.conv3_2 = Conv2D(num_filters, (3, 3), padding='valid', activation='relu')
         self.maxpool = MaxPooling2D((2, 2))
 
     def call(self, x):
-        x = self.conv3(x)
-        x = self.conv3(x)
+        x = self.conv3_1(x)
+        x = self.conv3_2(x)
         x = self.maxpool(x)
         return x
-
 
 class Upward_block(Layer):
     def __init__(self, conv3_filters, upconv_filters):
