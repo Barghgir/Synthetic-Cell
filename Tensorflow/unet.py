@@ -22,7 +22,7 @@ class Upward_block(Layer):
     def __init__(self, conv3_filters, upconv_filters):
         super(Upward_block, self).__init__()
         self.conv3_1 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
-        self.conv3_2 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
+        self.conv3_2 = Conv2D(conv3_filters, (3, 3), padding='valid', activation='relu')
         self.concat = Concatenate(axis=3)
         self.upconv = Conv2DTranspose(upconv_filters, (2, 2), activation='relu')
 
