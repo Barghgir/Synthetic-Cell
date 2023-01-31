@@ -8,26 +8,24 @@ from keras.layers import Concatenate, GlobalAveragePooling2D, Conv2DTranspose, R
 class Downward_block(Layer):
     def __init__(self, num_filters):
         super(Downward_block, self).__init__()
-        self.conv3_1 = Conv2D(num_filters, (3, 3), padding='valid', activation='relu')
+        self.conv3_1 = Conv2D(num_filters, (3, 3), padding='same', activation='relu')
         self.conv3_2 = Conv2D(num_filters, (3, 3), padding='valid', activation='relu')
         self.maxpool = MaxPooling2D((2, 2))
 
     def call(self, x):
         x = self.conv3_1(x)
-        x_before_pool = self.conv3_2(x)
-        x = self.maxpool(x_before_pool)
-        return x, x_before_pool
-
+        x = self.conv3_2(x)
+        x = self.maxpool(x)
+        return x
 
 class Upward_block(Layer):
     def __init__(self, conv3_filters, upconv_filters):
         super(Upward_block, self).__init__()
         self.resize = Resizing
         self.conv3_1 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
-        self.conv3_2 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
+        self.conv3_2 = Conv2D(conv3_filters, (3, 3), padding='valid', activation='relu')
         self.concat = Concatenate(axis=3)
-        self.upconv = Conv2DTranspose(filters=upconv_filters, kernel_size=(2, 2),
-                                      strides=(2, 2), padding='valid', activation='relu')
+        self.upconv = Conv2DTranspose(upconv_filters, (3, 3), padding='same', activation='relu')
 
     def call(self, x, y):
         
