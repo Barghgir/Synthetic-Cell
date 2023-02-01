@@ -102,7 +102,7 @@ class Unet(Model):
 
     
     def summary_model(self):
-        inputs = Input(shape=(572, 572, 1))
+        inputs = Input(shape=(500, 500, 1))
         outputs = self.call(inputs)
         Model(inputs=inputs, outputs=outputs).summary()
 
