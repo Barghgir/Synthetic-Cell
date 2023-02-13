@@ -22,7 +22,7 @@ class Upward_block(Layer):
     def __init__(self, conv3_filters, upconv_filters):
         super(Upward_block, self).__init__()
         self.resize = Resizing
-        self.conv3_1 = Conv2D(conv3_filters, (3, 3), padding='same', activation='relu')
+        self.conv3_1 = Conv2D(conv3_filters, (3, 3), padding='valid', activation='relu')
         self.conv3_2 = Conv2D(conv3_filters, (3, 3), padding='valid', activation='relu')
         self.concat = Concatenate(axis=3)
         self.upconv = Conv2DTranspose(upconv_filters, (3, 3), padding='same', activation='relu')
@@ -55,7 +55,8 @@ class Unet(Model):
         self.down3 = Downward_block(256)
         self.down4 = Downward_block(512)
                     
-        self.conv3 = Conv2D(1024, (3, 3), padding='valid', activation='relu')
+        self.conv3_1 = Conv2D(1024, (3, 3), padding='valid', activation='relu')
+        self.conv3_2 = Conv2D(1024, (3, 3), padding='valid', activation='relu')
 
         self.up4 = Upward_block(512, 512)
         self.up3 = Upward_block(256, 256) 
@@ -63,6 +64,7 @@ class Unet(Model):
         self.up1 = Upward_block(64, 64) 
 
         self.conv1 = Conv2D(1, (1, 1), padding='same', activation='relu')
+        
 
     def call(self, x):
         x, x1 = self.down1(x)
@@ -77,8 +79,9 @@ class Unet(Model):
         x, x4 = self.down4(x)
         # print("Shape of x4 --->", x4.shape)
         # print("Shape of x --->", x.shape)
-        x = self.conv3(x)
-        x = self.conv3(x)
+        x = self.conv3_1(x)
+        # print("Shape of x --->", x.shape)
+        x = self.conv3_2(x)
         # print("Shape of x --->", x.shape)
         x = self.up4(x, x4)
         # print("Shape of x (after up4)--->", x.shape)
@@ -91,16 +94,9 @@ class Unet(Model):
         return x
 
 
-
-
-    # def build(self, input_shape):
-    #     x = self.input_layer()
-    #     output = self.call(x)
-    #     return Model(inputs=x, outputs=output)
-
     
     def summary_model(self):
-        inputs = Input(shape=(572, 572, 1))
+        inputs = Input(shape=(500, 500, 1))
         outputs = self.call(inputs)
         Model(inputs=inputs, outputs=outputs).summary()
 
