@@ -99,3 +99,27 @@ train_dataset = train_dataset.batch(batch_size)
 test_dataset = tf.data.Dataset.from_generator(generator=gen_pairs_test, output_types=(np.float32, np.float32))
 test_dataset = test_dataset.batch(batch_size)
 
+
+# creating traning loop
+epochs = 10
+learning_rate = 0.001
+optimizer = tf.optimizers.Adam(learning_rate)
+
+def train_one_batch(x, y):
+    y = tf.reshape(y, shape=(batch_size, 308, 308, 1))
+    
+    with tf.GradientTape() as tape:
+        pred = model(x, training=True)
+        loss = dice_loss(y, pred)
+
+    grads = tape.gradient(loss, model.trainable_weights)
+    optimizer.apply_gradients(zip(grads, model.trainable_weights))
+
+
+def validate_one_batch(x, y):
+    y = tf.reshape(y, shape=(batch_size, 308, 308, 1))
+    pred = model(x, training=False)
+    loss = dice_loss(y, pred)
+    return loss
+
+
