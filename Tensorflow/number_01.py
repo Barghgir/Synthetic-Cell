@@ -29,6 +29,7 @@ for i in mask_lst_1:
 img_labeled.sort()
 mask_lst_1.sort()
 
+# Create DataFrame from building dictionary
 dict_labeled = {
     "image_labeled": img_labeled,
     "mask_labeled": mask_lst_1,
