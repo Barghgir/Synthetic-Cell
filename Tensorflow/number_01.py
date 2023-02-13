@@ -86,3 +86,15 @@ def get_blur_amt(x):
 
 # create a new column called 'blur_amt'
 df_labeled['blur_amt'] = df_labeled['image_labeled'].apply(get_blur_amt)
+
+
+# Use Data Generators to set train_dataset and test_dataset
+batch_size = 8
+# Prepare the training dataset.
+train_dataset = tf.data.Dataset.from_generator(generator=gen_pairs_train, output_types=(np.float32, np.float32))
+train_dataset = train_dataset.batch(batch_size)
+
+# Prepare the validation dataset.
+test_dataset = tf.data.Dataset.from_generator(generator=gen_pairs_test, output_types=(np.float32, np.float32))
+test_dataset = test_dataset.batch(batch_size)
+
