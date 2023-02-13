@@ -8,4 +8,8 @@ import numpy as np
 from glob import glob
 import matplotlib.pyplot as plt
 import pandas as pd
+import tensorflow as tf
+
+from skimage.io import imread, imshow
+from skimage.transform import resize
 
