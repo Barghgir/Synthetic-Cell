@@ -9,6 +9,7 @@ from glob import glob
 import matplotlib.pyplot as plt
 import pandas as pd
 import tensorflow as tf
+from Generators import gen_pairs_test, gen_pairs_train
 
 from skimage.io import imread, imshow
 from skimage.transform import resize
