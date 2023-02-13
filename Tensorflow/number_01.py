@@ -36,3 +36,52 @@ dict_labeled = {
 }
 
 df_labeled = pd.DataFrame(dict_labeled)
+
+# Add a column showing how many cells are on each image
+
+def get_num_cells(x):
+    x = x.split("/")[-1]
+    # split on the _
+    a = x.split('_')
+    # choose the third item
+    b = a[2] # e.g. C53
+    # choose second item onwards and convert to int
+    num_cells = int(b[1:])
+    
+    return num_cells
+
+# create a new column called 'num_cells'
+df_labeled['num_cells'] = df_labeled['image_labeled'].apply(get_num_cells)
+
+
+# Add a column indicating if an image has a mask.
+
+# Keep in mind images and masks have the same file names.
+
+def check_for_mask(x):
+    x = x.split("/")[-1]
+    mask_list = [i.split("/")[-1] for i in mask_lst_1]
+    if x in mask_list:
+        return 'yes'
+    else:
+        return 'no'
+    
+# create a new column called 'df_labeled'
+df_labeled['has_mask'] = df_labeled['image_labeled'].apply(check_for_mask)
+
+
+# Add a column showing how much blur was added to each image
+
+def get_blur_amt(x):
+    x = x.split("/")[-1]
+    # split on the _
+    a = x.split('_')
+    # choose the third item
+    b = a[3] # e.g. F1
+    # choose second item onwards and convert to int
+    blur_amt = int(b[1:])
+    
+    return blur_amt
+
+# create a new column called 'blur_amt'
+df_labeled['blur_amt'] = df_labeled['image_labeled'].apply(get_blur_amt)
