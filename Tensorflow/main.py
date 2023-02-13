@@ -123,3 +123,16 @@ def validate_one_batch(x, y):
     return loss
 
 
+for epoch in range(epochs):
+    for batch, (input, target) in enumerate(train_dataset):
+        train_one_batch(input, target)
+    print(f"\r EPOCH [{epoch+1}/{epochs}] Batch: {batch}")
+
+
+    val_loss = []
+    for input_test, target_test in test_dataset:
+        loss = validate_one_batch(input_test, target_test)
+        val_loss.append(loss)
+
+    print("Validation Loss :   ", str(np.mean(val_loss)))
+
